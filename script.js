@@ -33,8 +33,7 @@ class FlowFieldEffect {
         this.#height = height;
         this.#ctx.strokeStyle = 'white';
         this.#width = width;
-        this.x = 0;
-        this.y = 0;
+        this.angle = 0;
         console.log('effect loaded ');
 
 
@@ -50,10 +49,9 @@ class FlowFieldEffect {
 
     // public method 
     animate() {
+        this.angle +=0.1;
         this.#ctx.clearRect(0, 0, this.#width, this.#height)
-        this.#draw(this.x, this.y);
-        this.x += 2
-        this.y += 0.2
+        this.#draw(this.#width / 2 + Math.sin(this.angle) * 100 , this.#height / 2 + Math.cos(this.angle) * 100);
         console.log('animate log');
         flowFieldAnimation = requestAnimationFrame(this.animate.bind(this));
     }
