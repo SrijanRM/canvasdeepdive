@@ -47,10 +47,12 @@ class FlowFieldEffect {
         this.lastTime = 0;
         this.interval = 1000 / 60;
         this.timer = 0;
-        this.cellSize = 12;
+        this.cellSize = 15;
         this.gradient;
         this.#createGradient();
         this.#ctx.strokeStyle = this.gradient;
+        this.radius = 0;
+        this.vr = 0.03;
     }
     #createGradient() {
         this.gradient = this.#ctx.createLinearGradient(0, 0, this.#width, this.#height)
@@ -80,10 +82,14 @@ class FlowFieldEffect {
         if (this.timer > this.interval) {
             // this.angle += 0.1;
             this.#ctx.clearRect(0, 0, this.#width, this.#height)
+            this.radius += this.vr;
+            console.log(this.radius);
+            
+            if (this.radius > 7 || this.radius < -7) this.vr *= -1;
 
             for (let y = 0; y < this.#height; y += this.cellSize) {
                 for (let x = 0; x < this.#width; x += this.cellSize) {
-                    const angle = Math.cos(x * 0.05) + Math.sin(y * 0.05)
+                    const angle = (Math.cos(x * 0.01) + Math.sin(y * 0.01)) * this.radius;
                     this.#drawLine(angle, x, y);
                 }
             }
