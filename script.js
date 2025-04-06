@@ -22,6 +22,16 @@ window.addEventListener('resize', () => {
     flowField.animate();
 })
 
+const mouse = {
+    x: 0,
+    y: 0
+}
+window.addEventListener('mousemove', (e) => {
+    console.log('event ', e);
+    mouse.x = e.x;
+    mouse.y = e.y;
+})
+
 class FlowFieldEffect {
     // private class field
     #ctx;
@@ -32,6 +42,7 @@ class FlowFieldEffect {
         this.#ctx = cxt;
         this.#height = height;
         this.#ctx.strokeStyle = 'white';
+        this.#ctx.lineWidth = 5;
         this.#width = width;
         this.angle = 0;
         console.log('effect loaded ');
@@ -43,16 +54,15 @@ class FlowFieldEffect {
         const length = 30;
         this.#ctx.beginPath();
         this.#ctx.moveTo(x, y);
-        this.#ctx.lineTo(x + length, y + length);
+        this.#ctx.lineTo(mouse.x, mouse.y);
         this.#ctx.stroke();
     }
 
     // public method 
     animate() {
-        this.angle +=0.1;
+        this.angle += 0.1;
         this.#ctx.clearRect(0, 0, this.#width, this.#height)
-        this.#draw(this.#width / 2 + Math.sin(this.angle) * 100 , this.#height / 2 + Math.cos(this.angle) * 100);
-        console.log('animate log');
+        this.#draw(this.#width / 2, this.#height / 2);
         flowFieldAnimation = requestAnimationFrame(this.animate.bind(this));
     }
 }
