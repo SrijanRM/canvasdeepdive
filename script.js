@@ -18,6 +18,18 @@ class FlowFieldEffect {
     constructor(cxt, width, height) {
         this.#ctx = cxt;
         this.#height = height;
+        this.#ctx.strokeStyle = 'white';
         this.#width = width;
+        console.log('effect loaded ');
+        this.#draw(100, 100)
+
+    }
+    // provite method 
+    #draw(x, y) {
+        const length = 30;
+        this.#ctx.beginPath();
+        this.#ctx.moveTo(x, y);
+        this.#ctx.lineTo(x + length, y + length);
+        this.#ctx.stroke();
     }
 }
