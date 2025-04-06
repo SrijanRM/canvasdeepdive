@@ -11,7 +11,7 @@ window.onload = function () {
     canvas.height = window.innerHeight;
 
     flowField = new FlowFieldEffect(cxt, canvas.width, canvas.height)
-    flowField.animate();
+    flowField.animate(0);
 }
 
 window.addEventListener('resize', () => {
@@ -19,7 +19,7 @@ window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     flowField = new FlowFieldEffect(cxt, canvas.width, canvas.height)
-    flowField.animate();
+    flowField.animate(0);
 })
 
 const mouse = {
@@ -27,7 +27,6 @@ const mouse = {
     y: 0
 }
 window.addEventListener('mousemove', (e) => {
-    console.log('event ', e);
     mouse.x = e.x;
     mouse.y = e.y;
 })
@@ -45,9 +44,9 @@ class FlowFieldEffect {
         this.#ctx.lineWidth = 5;
         this.#width = width;
         this.angle = 0;
-        console.log('effect loaded ');
-
-
+        this.lastTime = 0;
+        this.interval = 1000/60;
+        this.timer = 0;
     }
     // private method 
     #draw(x, y) {
@@ -59,11 +58,22 @@ class FlowFieldEffect {
     }
 
     // public method 
-    animate() {
-        this.angle += 0.1;
-        this.#ctx.clearRect(0, 0, this.#width, this.#height)
-        this.#draw(this.#width / 2, this.#height / 2);
+    animate(timestamp) {
+
+        let deltaTime = timestamp - this.lastTime
+        this.lastTime = timestamp
+
+        if (this.timer > this.interval) {
+            this.angle += 0.1;
+            this.#ctx.clearRect(0, 0, this.#width, this.#height)
+            this.#draw(this.#width / 2, this.#height / 2);
+            this.timer = 0
+        } else {
+            this.timer += deltaTime
+        }
+
         flowFieldAnimation = requestAnimationFrame(this.animate.bind(this));
+
     }
 }
 
